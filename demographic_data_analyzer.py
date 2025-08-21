@@ -2,23 +2,23 @@ import pandas as pd
 
 
 def calculate_demographic_data(print_data=True):
-    # Read data from file
+    # le o arquivo csv
     df = pd.read_csv("adult.data.csv")
 
-    # How many of each race are represented in this dataset?
+    # conta as pessoas por raça
     race_count = df["race"].value_counts()
 
-    # What is the average age of men?
+    # media de idade dos homens com uma casa decimal
     average_age_men = round(df.loc[df["sex"] == "Male", "age"].mean(), 1)
 
-    # What is the percentage of people who have a Bachelor's degree?
+    # % de pessoas com bacharelado com uma casa decimal
     percentage_bachelors = round((df["education"] == "Bachelors").mean() * 100, 1)
 
-    # with and without `Bachelors`, `Masters`, or `Doctorate`
+    # separa por nivel de educacao
     higher_education = df[df["education"].isin(["Bachelors", "Masters", "Doctorate"])]
     lower_education = df[~df["education"].isin(["Bachelors", "Masters", "Doctorate"])]
 
-    # percentage with salary >50K
+    # % de ricos por nivel de educacao
     higher_education_rich = round(
         (higher_education["salary"] == ">50K").mean() * 100, 1
     )
@@ -26,14 +26,14 @@ def calculate_demographic_data(print_data=True):
         (lower_education["salary"] == ">50K").mean() * 100, 1
     )
 
-    # What is the minimum number of hours a person works per week?
+    # menor carga horaria semanal
     min_work_hours = df["hours-per-week"].min()
 
-    # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
+    # % de ricos entre os que trabalham menos horas
     num_min_workers = df[df["hours-per-week"] == min_work_hours]
     rich_percentage = round((num_min_workers["salary"] == ">50K").mean() * 100, 1)
 
-    # What country has the highest percentage of people that earn >50K?
+    # pais com maior % de ricos
     country_rich_pct = (
         df.groupby("native-country")["salary"]
         .apply(lambda s: (s == ">50K").mean() * 100)
@@ -42,7 +42,7 @@ def calculate_demographic_data(print_data=True):
     highest_earning_country = country_rich_pct.idxmax()
     highest_earning_country_percentage = round(country_rich_pct.max(), 1)
 
-    # Identify the most popular occupation for those who earn >50K in India.
+    # ocupacao mais comum entre ricos na Índia
     india_rich = df[(df["native-country"] == "India") & (df["salary"] == ">50K")]
     top_IN_occupation = india_rich["occupation"].value_counts().idxmax()
 
