@@ -42,7 +42,7 @@ def calculate_demographic_data(print_data=True):
     highest_earning_country = country_rich_pct.idxmax()
     highest_earning_country_percentage = round(country_rich_pct.max(), 1)
 
-    # ocupacao mais comum entre ricos na Índia
+    # ocupacao de ricos na Índia
     india_rich = df[(df["native-country"] == "India") & (df["salary"] == ">50K")]
     top_IN_occupation = india_rich["occupation"].value_counts().idxmax()
 
